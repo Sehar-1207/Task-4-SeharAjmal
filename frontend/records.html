@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clinical Records Entry - CoreCare</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark shadow-sm py-3">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center fw-bold text-white" href="index.html">
+        <i class="fas fa-arrow-left me-2 small opacity-75"></i> Dashboard
+      </a>
+      <span class="badge bg-info text-dark font-monospace px-3 py-2 rounded-pill small">Consultation Filing Node</span>
+    </div>
+  </nav>
+
+  <div class="container-fluid my-4 my-md-5 px-3 px-md-5">
+    <div class="row g-4">
+      
+      <div class="col-xl-4 col-lg-5">
+        <div class="card p-3 p-sm-4 clinical-card border-0">
+          <div class="d-flex align-items-center mb-2">
+            <div class="bg-danger bg-opacity-10 icon-shape me-3 text-danger">
+              <i class="fas fa-file-medical fs-5"></i>
+            </div>
+            <div>
+              <h2 class="h5 fw-bold text-dark mb-0 tracking-tight">New Consultation Record</h2>
+              <p class="text-muted mb-0 small" style="font-size: 0.8rem; margin-top: 2px;">Commit clinical parameters to storage.</p>
+            </div>
+          </div>
+          <hr class="my-3 my-md-4 opacity-10">
+
+          <form id="record-form">
+            <div class="row g-3 mb-3">
+              <div class="col-sm-6 col-12">
+                <label class="form-label small fw-semibold text-muted text-uppercase tracking-wider mb-1" style="font-size: 0.7rem;">Target Patient Case</label>
+                <select id="rec-patient-select" class="form-select shadow-none" required></select>
+              </div>
+              <div class="col-sm-6 col-12">
+                <label class="form-label small fw-semibold text-muted text-uppercase tracking-wider mb-1" style="font-size: 0.7rem;">Attending Physician</label>
+                <select id="rec-doctor-select" class="form-select shadow-none" required></select>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-muted text-uppercase tracking-wider mb-1" style="font-size: 0.7rem;">Clinical Diagnosis Statement</label>
+              <input type="text" id="rec-diagnosis" class="form-control shadow-none" placeholder="Acute respiratory tract infection" required>
+            </div>
+
+            <div class="card vitals-container mb-3 border-0">
+              <h3 class="h6 fw-bold text-dark text-uppercase mb-3" style="font-size: 0.75rem; letter-spacing: 0.05em;"><i class="fas fa-heartbeat text-danger me-2"></i>Patient Vitals Baseline</h3>
+              <div class="row g-2 row-cols-1 row-cols-sm-3">
+                <div class="col">
+                  <input type="text" id="v-bp" class="form-control shadow-none" placeholder="BP (120/80)">
+                </div>
+                <div class="col">
+                  <input type="number" id="v-hr" class="form-control shadow-none" placeholder="HR (bpm)">
+                </div>
+                <div class="col">
+                  <input type="number" step="0.1" id="v-temp" class="form-control shadow-none" placeholder="Temp (°F)">
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-muted text-uppercase tracking-wider mb-1" style="font-size: 0.7rem;">Prescription Formulation</label>
+              <div class="row g-2 row-cols-1 row-cols-sm-3">
+                <div class="col"><input type="text" id="med-name" class="form-control shadow-none" placeholder="Medication"></div>
+                <div class="col"><input type="text" id="med-dosage" class="form-control shadow-none" placeholder="Dosage"></div>
+                <div class="col"><input type="text" id="med-freq" class="form-control shadow-none" placeholder="Frequency"></div>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label small fw-semibold text-muted text-uppercase tracking-wider mb-1" style="font-size: 0.7rem;">Clinical Progress Notes</label>
+              <textarea id="rec-notes" class="form-control shadow-none" rows="3" placeholder="Additional treatment observation summaries..."></textarea>
+            </div>
+
+            <button type="submit" id="rec-submit-btn" class="btn btn-danger text-white w-100 btn-commit shadow-sm">
+              Commit Medical Record to Ledger
+            </button>
+          </form>
+
+          <div id="record-feedback" class="mt-3 d-none p-3 rounded text-xs font-medium border"></div>
+        </div>
+      </div>
+
+      <div class="col-xl-8 col-lg-7">
+        <div class="card p-3 p-sm-4 clinical-card h-100 border-0">
+          <div class="d-flex align-items-center mb-3">
+            <div class="bg-secondary bg-opacity-10 icon-shape me-3 text-secondary">
+              <i class="fas fa-history fs-5"></i>
+            </div>
+            <div>
+              <h3 class="h5 fw-bold text-dark mb-0 tracking-tight">Archived Records Index</h3>
+              <p class="text-muted mb-0 small" style="font-size: 0.8rem; margin-top: 1px;">Review and manage submitted charts.</p>
+            </div>
+          </div>
+          <hr class="opacity-10 mb-4">
+
+          <div class="table-responsive scrollable-registry">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="text-uppercase" style="font-size: 0.72rem; letter-spacing: 0.05em;">
+                <tr>
+                  <th class="text-nowrap">Patient / Doctor</th>
+                  <th class="text-nowrap">Clinical Diagnosis</th>
+                  <th class="text-nowrap">Vitals Parameters</th>
+                  <th class="text-end text-nowrap">Management Actions</th>
+                </tr>
+              </thead>
+              <tbody id="records-list">
+                <tr>
+                  <td colspan="4" class="text-center py-5 text-muted small">
+                    <i class="fas fa-circle-notch fa-spin me-2 text-primary"></i> Querying record registries...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="modal fade" id="updateRecordModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content border-0 shadow rounded-4">
+        <div class="modal-header bg-dark text-white border-0 p-4">
+          <h5 class="modal-title h6 fw-bold d-flex align-items-center mb-0"><i class="fas fa-edit text-danger me-2"></i>Modify Consultation Log File</h5>
+          <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="update-record-form">
+          <input type="hidden" id="edit-rec-id">
+          <div class="modal-body p-4">
+            <div class="row g-3 mb-3">
+              <div class="col-sm-6 col-12">
+                <label class="form-label small fw-semibold text-muted text-uppercase tracking-wider mb-1" style="font-size: 0.7rem;">Target Patient Case</label>
+                <select id="edit-rec-patient" class="form-select shadow-none" required></select>
+              </div>
+              <div class="col-sm-6 col-12">
+                <label class="form-label small fw-semibold text-muted text-uppercase tracking-wider mb-1" style="font-size: 0.7rem;">Attending Physician</label>
+                <select id="edit-rec-doctor" class="form-select shadow-none" required></select>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-muted text-uppercase tracking-wider mb-1" style="font-size: 0.7rem;">Clinical Diagnosis Statement</label>
+              <input type="text" id="edit-rec-diagnosis" class="form-control shadow-none" required>
+            </div>
+            <div class="card vitals-container mb-3 border-0">
+              <h3 class="h6 fw-bold text-dark text-uppercase mb-3" style="font-size: 0.75rem; letter-spacing: 0.05em;"><i class="fas fa-heartbeat text-danger me-2"></i>Patient Vitals Baseline</h3>
+              <div class="row g-2 row-cols-1 row-cols-sm-3">
+                <div class="col">
+                  <input type="text" id="edit-v-bp" class="form-control shadow-none" placeholder="BP">
+                </div>
+                <div class="col">
+                  <input type="number" id="edit-v-hr" class="form-control shadow-none" placeholder="HR">
+                </div>
+                <div class="col">
+                  <input type="number" step="0.1" id="edit-v-temp" class="form-control shadow-none" placeholder="Temp">
+                </div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-muted text-uppercase tracking-wider mb-1" style="font-size: 0.7rem;">Prescription Formulation</label>
+              <div class="row g-2 row-cols-1 row-cols-sm-3">
+                <div class="col"><input type="text" id="edit-med-name" class="form-control shadow-none" placeholder="Medication"></div>
+                <div class="col"><input type="text" id="edit-med-dosage" class="form-control shadow-none" placeholder="Dosage"></div>
+                <div class="col"><input type="text" id="edit-med-freq" class="form-control shadow-none" placeholder="Frequency"></div>
+              </div>
+            </div>
+            <div class="mb-0">
+              <label class="form-label small fw-semibold text-muted text-uppercase tracking-wider mb-1" style="font-size: 0.7rem;">Clinical Progress Notes</label>
+              <textarea id="edit-rec-notes" class="form-control shadow-none" rows="3"></textarea>
+            </div>
+            <div id="edit-rec-feedback" class="mt-3 d-none alert"></div>
+          </div>
+          <div class="modal-footer border-top bg-light p-3 border-0">
+            <button type="button" class="btn btn-secondary font-medium px-4 py-2 border-0" data-bs-dismiss="modal" style="border-radius: 10px; font-size: 0.85rem;">Cancel</button>
+            <button type="submit" id="edit-rec-submit" class="btn btn-danger font-medium px-4 py-2 btn-commit shadow-sm" style="font-size: 0.85rem;">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-content border-0 shadow rounded-4">
+        <div class="modal-body text-center p-4">
+          <div class="text-danger mb-3"><i class="fas fa-exclamation-triangle fa-3x"></i></div>
+          <h4 class="h6 fw-bold text-dark mb-2">Purge Consultation Record?</h4>
+          <p class="text-muted small mb-0">This operational action is irreversible. Completely drop this ledger entry?</p>
+        </div>
+        <div class="modal-footer border-0 bg-light p-2 d-flex justify-content-stretch">
+          <button type="button" class="btn btn-secondary flex-grow-1 border-0 py-2" data-bs-dismiss="modal" style="border-radius: 10px; font-size: 0.85rem;">Cancel</button>
+          <button type="button" id="confirm-purge-btn" class="btn btn-danger flex-grow-1 py-2" style="border-radius: 10px; font-size: 0.85rem; background-color: var(--hms-danger) !important; border: none;">Purge File</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1080;">
+    <div id="toast-feedback" class="toast align-items-center text-white bg-dark border-0 rounded-3 shadow" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body small fw-medium" id="toast-text"></div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script type="module" src="js/records.js"></script>
+</body>
+</html>

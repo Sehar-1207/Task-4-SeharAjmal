@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Management Hub - CoreCare</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-light">
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-secondary shadow-sm">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="index.html"><i class="fas fa-arrow-left me-2"></i> Dashboard</a>
+      <span id="total-patient-badge" class="badge bg-info text-dark font-monospace">0 Cases</span>
+    </div>
+  </nav>
+
+  <div class="container-fluid my-5 px-md-5">
+    <div class="row g-4">
+      
+      <div class="col-xl-4 col-lg-5">
+        <div class="card border-0 shadow-sm p-4 bg-white" style="border-radius: 12px;">
+          <h2 class="h5 fw-bold text-dark mb-1"><i class="fas fa-user-plus text-primary me-2"></i>Onboard New Patient Case</h2>
+          <p class="text-muted small mb-3">Initialize a unique system identity profile record.</p>
+          <hr class="opacity-25">
+
+          <form id="standalone-patient-form">
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-muted text-uppercase">Full Legal Name</label>
+              <input type="text" id="sp-name" class="form-control" placeholder="Alex Mercer" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-muted text-uppercase">Email Address</label>
+              <input type="email" id="sp-email" class="form-control" placeholder="alex.m@domain.com" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-muted text-uppercase">Phone Contact</label>
+              <input type="tel" id="sp-phone" class="form-control" placeholder="+1234567890" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-muted text-uppercase">Date of Birth</label>
+              <input type="date" id="sp-dob" class="form-control" required>
+            </div>
+            <div class="row g-2 mb-4">
+              <div class="col-6">
+                <label class="form-label small fw-semibold text-muted text-uppercase">Biological Gender</label>
+                <select id="sp-gender" class="form-select" required>
+                  <option value="" disabled selected hidden>Select...</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div class="col-6">
+                <label class="form-label small fw-semibold text-muted text-uppercase">Blood Group Type</label>
+                <select id="sp-blood" class="form-select" required>
+                  <option value="" disabled selected hidden>Select...</option>
+                  <option value="A+">A+</option>
+                  <option value="A-">A-</option>
+                  <option value="B+">B+</option>
+                  <option value="B-">B-</option>
+                  <option value="AB+">AB+</option>
+                  <option value="AB-">AB-</option>
+                  <option value="O+">O+</option>
+                  <option value="O-">O-</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" id="sp-submit-btn" class="btn btn-primary w-100 fw-medium shadow-sm">
+              Register Patient Case File
+            </button>
+          </form>
+          <div id="sp-patient-feedback" class="mt-3 d-none alert"></div>
+        </div>
+      </div>
+
+      <div class="col-xl-8 col-lg-7">
+        <div class="card border-0 shadow-sm p-4 bg-white" style="border-radius: 12px;">
+          <h3 class="h5 fw-bold text-dark mb-3"><i class="fas fa-folder-open text-muted me-2"></i>Active Records Ledger Directories</h3>
+          <div class="table-responsive scrollable-registry">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="table-light text-uppercase fs-7" style="font-size: 0.75rem; letter-spacing: 0.05em;">
+                <tr>
+                  <th>Patient Info</th>
+                  <th>Contact Parameters</th>
+                  <th>Demographics</th>
+                  <th class="text-end">Management Actions</th>
+                </tr>
+              </thead>
+              <tbody id="standalone-patients-list">
+                <tr>
+                  <td colspan="4" class="text-center py-4 text-muted">Querying server registries...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="modal fade" id="updatePatientModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow" style="border-radius: 14px;">
+        <div class="modal-header bg-dark text-white border-0 py-3">
+          <h5 class="modal-title h6 fw-bold"><i class="fas fa-user-edit text-info me-2"></i>Modify Patient Case File</h5>
+          <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="update-patient-form">
+          <input type="hidden" id="edit-p-id">
+          <div class="modal-body p-4">
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-muted text-uppercase">Full Legal Name</label>
+              <input type="text" id="edit-p-name" class="form-control shadow-none" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-muted text-uppercase">Email Address</label>
+              <input type="email" id="edit-p-email" class="form-control shadow-none" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-muted text-uppercase">Phone Contact</label>
+              <input type="tel" id="edit-p-phone" class="form-control shadow-none" required>
+            </div>
+            <div class="row g-2">
+              <div class="col-6">
+                <label class="form-label small fw-semibold text-muted text-uppercase">Biological Gender</label>
+                <select id="edit-p-gender" class="form-select shadow-none" required>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div class="col-6">
+                <label class="form-label small fw-semibold text-muted text-uppercase">Blood Group</label>
+                <select id="edit-p-blood" class="form-select shadow-none" required>
+                  <option value="A+">A+</option>
+                  <option value="A-">A-</option>
+                  <option value="B+">B+</option>
+                  <option value="B-">B-</option>
+                  <option value="AB+">AB+</option>
+                  <option value="AB-">AB-</option>
+                  <option value="O+">O+</option>
+                  <option value="O-">O-</option>
+                </select>
+              </div>
+            </div>
+            <div id="edit-p-feedback" class="mt-3 d-none alert"></div>
+          </div>
+          <div class="modal-footer border-top bg-light p-3" style="border-bottom-left-radius: 14px; border-bottom-right-radius: 14px;">
+            <button type="button" class="btn btn-sm btn-secondary font-medium px-3" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" id="edit-p-submit" class="btn btn-sm btn-info font-medium px-4 text-dark shadow-sm">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script type="module" src="js/patient.js"></script>
+</body>
+</html>

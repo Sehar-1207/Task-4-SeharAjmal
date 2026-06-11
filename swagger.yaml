@@ -1,0 +1,120 @@
+openapi: 3.0.0
+info:
+  title: Employee Management API
+  version: 1.0.0
+  description: A robust full stack backend digital vault to perform operational CRUD actions on employee records.
+servers:
+  - url: http://localhost:5000
+    description: Local Development Server
+
+paths:
+  /api/employees:
+    post:
+      summary: Create a new employee record
+      tags:
+        - Employees
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Employee'
+      responses:
+        201:
+          description: Employee record successfully saved to persistence layer.
+        400:
+          description: Validation or duplicate database entry error.
+    get:
+      summary: Retrieve a full list of all employees
+      tags:
+        - Employees
+      responses:
+        200:
+          description: Data successfully compiled and read.
+
+  /api/employees/{id}:
+    get:
+      summary: Find a single employee record by their database ID
+      tags:
+        - Employees
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The unique Mongoose Document Hex ID
+      responses:
+        200:
+          description: Matching record successfully retrieved.
+        404:
+          description: Employee matching ID not found.
+    put:
+      summary: Update an existing employee profile partially or completely
+      tags:
+        - Employees
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The unique Mongoose Document Hex ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Employee'
+      responses:
+        200:
+          description: Data modified and verified successfully.
+        404:
+          description: Employee entry not found.
+    delete:
+      summary: Purge an employee profile record from the database completely
+      tags:
+        - Employees
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The unique Mongoose Document Hex ID
+      responses:
+        200:
+          description: File successfully cleared from backend records.
+        404:
+          description: Target profile missing.
+
+components:
+  schemas:
+    Employee:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - email
+        - department
+        - role
+        - salary
+      properties:
+        firstName:
+          type: string
+          example: Sehar
+        lastName:
+          type: string
+          example: Ajmal
+        email:
+          type: string
+          example: sehar@email.com
+        department:
+          type: string
+          example: Engineering
+        role:
+          type: string
+          example: Full Stack Developer
+        salary:
+          type: number
+          example: 85000

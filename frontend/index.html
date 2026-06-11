@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CoreCare | Hospital Management Center</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark sticky-top shadow-sm py-3">
+    <div class="container">
+      <a class="navbar-brand text-info d-flex align-items-center fw-bold" href="index.html">
+        <i class="fas fa-clinic-medical me-2 fs-4 text-info"></i>CoreCare HMS
+      </a>
+      <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNavbar">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4 gap-2">
+          <li class="nav-item"><a class="nav-link active fw-semibold text-white" href="index.html"><i class="fas fa-columns me-2 opacity-75"></i>Hub Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link text-white-50" href="patients.html"><i class="fas fa-id-card me-2 opacity-75"></i>Patients</a></li>
+          <li class="nav-item"><a class="nav-link text-white-50" href="doctors.html"><i class="fas fa-user-md me-2 opacity-75"></i>Onboarding Staff</a></li>
+          <li class="nav-item"><a class="nav-link text-white-50" href="records.html"><i class="fas fa-file-medical me-2 opacity-75"></i>Consultation Log</a></li>
+        </ul>
+        <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-3 py-2 rounded-pill font-monospace small">
+          <i class="fas fa-circle-notch fa-spin me-2"></i>Backend Gateway Active
+        </span>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container my-5">
+
+    <div class="row mb-5">
+      <div class="col-12">
+        <div class="card hero-banner text-white border-0 p-4 p-md-5 position-relative shadow-sm">
+          <div class="row align-items-center g-4">
+            <div class="col-lg-7 text-center text-lg-start">
+              <span class="badge bg-info text-dark mb-3 fw-bold px-3 py-2 text-uppercase font-monospace tracking-wider" style="font-size: 0.75rem;">Enterprise Framework v1.0</span>
+              <h1 class="display-5 fw-bold mb-3 tracking-tight">Clinical Operations Control Center</h1>
+              <p class="lead text-white-50 mb-4 fs-6 style-fallback" style="max-width: 600px; line-height: 1.6;">Coordinate clinical staff scheduling, update patient biological parameters, and manage secure medical records pipelines in real time.</p>
+              <div class="d-flex flex-wrap gap-2 justify-content-center justify-content-lg-start">
+                <a href="#quick-launch" class="btn btn-info fw-semibold px-4 py-2.5 text-dark border-0 shadow-sm transition-all" style="border-radius: 12px;">Navigate Modules <i class="fas fa-compass ms-1"></i></a>
+                <a href="http://localhost:3000/api-docs" target="_blank" class="btn btn-outline-light px-4 py-2.5 font-medium transition-all" style="border-radius: 12px; border-color: rgba(255,255,255,0.25);"><i class="fas fa-book-open me-2 opacity-75"></i>Swagger Sandbox</a>
+              </div>
+            </div>
+            <div class="col-lg-5 col-md-8 mx-auto">
+              <img src="https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?q=80&w=600&auto=format&fit=crop" class="img-fluid img-fluid-fill" alt="Modern Hospital Digital Infrastructure Representation">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4 mb-5 text-dark">
+      <div class="col-md-4">
+        <div class="card stat-card p-4 d-flex flex-row align-items-center justify-content-between">
+          <div>
+            <h6 class="text-muted small text-uppercase fw-bold tracking-wider mb-2" style="font-size: 0.7rem;">Total Onboarded Patients</h6>
+            <h3 class="mb-0 fw-bold text-primary font-monospace fs-2" id="dash-metric-patients">0</h3>
+          </div>
+          <div class="icon-shape bg-primary bg-opacity-10 text-primary"><i class="fas fa-user-injured fa-lg"></i></div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card stat-card p-4 d-flex flex-row align-items-center justify-content-between">
+          <div>
+            <h6 class="text-muted small text-uppercase fw-bold tracking-wider mb-2" style="font-size: 0.7rem;">Pending Appointments</h6>
+            <h3 class="mb-0 fw-bold text-success font-monospace fs-2" id="dash-metric-appointments">0</h3>
+          </div>
+          <div class="icon-shape bg-success bg-opacity-10 text-success"><i class="fas fa-calendar-check fa-lg"></i></div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card stat-card p-4 d-flex flex-row align-items-center justify-content-between">
+          <div>
+            <h6 class="text-muted small text-uppercase fw-bold tracking-wider mb-2" style="font-size: 0.7rem;">Active Medical Staff</h6>
+            <h3 class="mb-0 fw-bold text-warning font-monospace fs-2" id="dash-metric-doctors">0</h3>
+          </div>
+          <div class="icon-shape bg-warning bg-opacity-10 text-warning"><i class="fas fa-user-md fa-lg"></i></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex align-items-center mb-4" id="quick-launch">
+      <div class="bg-secondary bg-opacity-10 rounded-3 p-2 me-3 d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
+        <i class="fas fa-th-large text-secondary"></i>
+      </div>
+      <h2 class="h4 fw-bold text-dark mb-0 tracking-tight">Core Administrative Entry Points</h2>
+    </div>
+
+    <div class="row g-4 mb-5">
+      <div class="col-md-4">
+        <div class="card hub-card p-4 h-100 shadow-sm">
+          <div class="icon-shape bg-primary text-white mb-4 shadow-sm"><i class="fas fa-id-card"></i></div>
+          <h3 class="h5 fw-bold text-dark mb-2">Patients</h3>
+          <p class="text-muted small flex-grow-1 mb-4" style="line-height: 1.6;">Onboard new clinical profiles, register contact data, search current records, and manage unique case index documents.</p>
+          <a href="patients.html" class="btn btn-outline-primary w-100 fw-semibold mt-auto py-2.5 small">Patient Panel <i class="fas fa-arrow-right ms-1 small"></i></a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card hub-card p-4 h-100 shadow-sm">
+          <div class="icon-shape bg-warning text-dark mb-4 shadow-sm"><i class="fas fa-user-md"></i></div>
+          <h3 class="h5 fw-bold text-dark mb-2">Staff</h3>
+          <p class="text-muted small flex-grow-1 mb-4" style="line-height: 1.6;">Add accredited health practitioners, manage specific clinical departments, assignment slots, and doctor details tracking.</p>
+          <a href="doctors.html" class="btn btn-outline-warning text-dark w-100 fw-semibold mt-auto py-2.5 small">Staff Panel <i class="fas fa-arrow-right ms-1 small"></i></a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card hub-card p-4 h-100 shadow-sm">
+          <div class="icon-shape bg-danger text-white mb-4 shadow-sm"><i class="fas fa-file-medical"></i></div>
+          <h3 class="h5 fw-bold text-dark mb-2">Consultation</h3>
+          <p class="text-muted small flex-grow-1 mb-4" style="line-height: 1.6;">File medical history ledger adjustments, update patient vitals records, and prescribe complex medications safely.</p>
+          <a href="records.html" class="btn btn-outline-danger w-100 fw-semibold mt-auto py-2.5 small">Open Consultation Desk <i class="fas fa-arrow-right ms-1 small"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-lg-5 col-12">
+        <div class="card bg-white p-4 shadow-sm border-light rounded-4">
+          <div class="d-flex align-items-center mb-3">
+            <div class="bg-success bg-opacity-10 rounded-3 p-2.5 me-3 d-flex align-items-center justify-content-center" style="width: 44px; height: 44px;">
+              <i class="fas fa-calendar-plus text-success fs-5"></i>
+            </div>
+            <div>
+              <h3 class="h5 fw-bold text-dark mb-0 tracking-tight">Book Appointment Slot</h3>
+              <p class="text-muted mb-0 small" style="font-size: 0.8rem; margin-top: 2px;">Schedule a new patient consultation slot.</p>
+            </div>
+          </div>
+          
+          <hr class="opacity-10 mb-4">
+          
+          <form id="dash-appointment-form">
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-muted text-uppercase tracking-wider mb-1" style="font-size: 0.7rem;">Target Patient</label>
+              <select id="dash-patient-select" class="form-select shadow-none" required></select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-muted text-uppercase tracking-wider mb-1" style="font-size: 0.7rem;">Assigned Physician</label>
+              <select id="dash-doctor-select" class="form-select shadow-none" required></select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-muted text-uppercase tracking-wider mb-1" style="font-size: 0.7rem;">Schedule Time</label>
+              <input type="datetime-local" id="dash-app-date" class="form-control shadow-none" required>
+            </div>
+            <div class="mb-4">
+              <label class="form-label small fw-semibold text-muted text-uppercase tracking-wider mb-1" style="font-size: 0.7rem;">Symptomatic Notes</label>
+              <textarea id="dash-app-symptoms" class="form-control shadow-none" rows="2" placeholder="Describe diagnosis markers..." required></textarea>
+            </div>
+            <button type="submit" id="dash-app-submit" class="btn btn-success text-white w-100 fw-semibold shadow-sm py-2.5 transition-all" style="border-radius: 12px; font-size: 0.95rem; background-color: var(--hms-success) !important; border: none;">
+              <i class="fas fa-lock me-2 opacity-75 small"></i>Commit Appointment
+            </button>
+          </form>
+          <div id="dash-app-feedback" class="mt-3 alert d-none font-medium text-xs rounded-3"></div>
+        </div>
+      </div>
+
+      <div class="col-lg-7 col-12">
+        <div class="card bg-white p-4 shadow-sm border-light rounded-4 h-100">
+          <div class="d-flex align-items-center mb-3">
+            <div class="bg-info bg-opacity-10 rounded-3 p-2.5 me-3 d-flex align-items-center justify-content-center" style="width: 44px; height: 44px;">
+              <i class="far fa-clock text-info fs-5"></i>
+            </div>
+            <div>
+              <h3 class="h5 fw-bold text-dark mb-0 tracking-tight">Live System Operations Queue</h3>
+              <p class="text-muted mb-0 small" style="font-size: 0.8rem; margin-top: 2px;">Real-time feed of managed clinical files.</p>
+            </div>
+          </div>
+          <hr class="opacity-10 mb-4">
+          <div id="dash-appointments-list" class="scrollable-panel d-flex flex-column gap-2">
+             </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script type="module" src="js/dashboard.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
