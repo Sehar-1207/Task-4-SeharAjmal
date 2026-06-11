@@ -1,0 +1,204 @@
+# backend/swagger.yaml
+openapi: 3.0.0
+info:
+  title: CoreCare Hospital Management Engine API
+  description: Complete full CRUD interactive testing suite built for managing Patients, Doctors, Appointments, and Clinical Case Records.
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000/api
+    description: Local API Gateway Server
+
+tags:
+  - name: Patients
+    description: Permanent clinical master directory files operations
+  - name: Doctors
+    description: Accredited healthcare practitioner rosters
+  - name: Appointments
+    description: Dynamic calendar scheduler operational pipeline
+  - name: Medical Records
+    description: Diagnostics, historical charting, and vitals ledger
+
+paths:
+  # --- PATIENT ROUTING CONTEXT ---
+  /patients:
+    get:
+      summary: Retrieve all patients
+      tags: [Patients]
+      responses:
+        '200':
+          description: Successful execution. Array list returned from MongoDB.
+        '500':
+          description: Internal database pipeline exception block.
+    post:
+      summary: Register a new patient
+      tags: [Patients]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, email, phone, dateOfBirth, gender]
+              properties:
+                name: { type: string, example: "Alex Mercer" }
+                email: { type: string, example: "alex.m@domain.com" }
+                phone: { type: string, example: "03001234567" }
+                dateOfBirth: { type: string, format: date, example: "1994-05-20" }
+                gender: { type: string, enum: [Male, Female, Other], example: "Male" }
+                bloodType: { type: string, example: "O+" }
+      responses:
+        '201':
+          description: Patient entity built successfully inside database collection.
+        '400':
+          description: Validation failure or profile parameter duplicate index drop.
+
+  /patients/{id}:
+    get:
+      summary: Find patient details by ID
+      tags: [Patients]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Valid 24-character hexadecimal MongoDB ObjectId string
+          schema: { type: string, example: "6a2a9ce4bdd54565056b47ec" }
+      responses:
+        '200':
+          description: Match found. Profile loaded.
+        '400':
+          description: Malformed Hex ID validation check failure.
+        '404':
+          description: Case file matching identifier not found.
+
+    put:
+      summary: Update patient file indicators
+      tags: [Patients]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, example: "6a2a9ce4bdd54565056b47ec" }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                phone: { type: string, example: "03217654321" }
+                bloodType: { type: string, example: "AB+" }
+      responses:
+        '200':
+          description: Profile updated successfully.
+        '404':
+          description: Target profile missing from storage cluster.
+
+    delete:
+      summary: Cascade purge patient entry
+      tags: [Patients]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, example: "6a2a9ce4bdd54565056b47ec" }
+      responses:
+        '200':
+          description: Core target profile removed from master collection logs.
+
+  # --- DOCTOR ROUTING CONTEXT ---
+  /doctors:
+    get:
+      summary: Fetch staff directory list
+      tags: [Doctors]
+      responses:
+        '200':
+          description: Master medical practitioners array collection loaded.
+    post:
+      summary: Onboard a clinical specialist
+      tags: [Doctors]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, specialty, email]
+              properties:
+                name: { type: string, example: "Sarah Jenkins" }
+                specialty: { type: string, example: "Cardiology" }
+                email: { type: string, example: "s.jenkins@hospital.com" }
+      responses:
+        '201':
+          description: Clinician onboarding complete.
+
+  # --- APPOINTMENT ROUTING CONTEXT ---
+  /appointments:
+    get:
+      summary: Pull calendar scheduling logs
+      tags: [Appointments]
+      responses:
+        '200':
+          description: Active scheduling queue maps returned.
+    post:
+      summary: Book appointment node slot
+      tags: [Appointments]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [patientId, doctorId, date, symptoms]
+              properties:
+                patientId: { type: string, example: "6a2a9ce4bdd54565056b47ec", description: "Strict 24-char hex MongoDB ObjectId" }
+                doctorId: { type: string, example: "6a2a9cabdd54565056b47eb", description: "Strict 24-char hex MongoDB ObjectId" }
+                date: { type: string, format: date-time, example: "2026-06-15T14:30:00.000Z" }
+                symptoms: { type: string, example: "Acute chest discomfort, blood pressure spike." }
+      responses:
+        '201':
+          description: Slot allocation secure.
+
+  # --- MEDICAL RECORD ROUTING CONTEXT ---
+  /records:
+    post:
+      summary: Write diagnostics and clinical log file
+      tags: [Medical Records]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [patientId, doctorId, diagnosis]
+              properties:
+                patientId: { type: string, example: "6a2a9ce4bdd54565056b47ec", description: "Strict 24-character hexadecimal ObjectId" }
+                doctorId: { type: string, example: "6a2a9cabdd54565056b47eb", description: "Strict 24-character hexadecimal ObjectId" }
+                diagnosis: { type: string, example: "Chronic Cardiovascular Malfunction" }
+                vitals:
+                  type: object
+                  properties:
+                    bloodPressure: { type: string, example: "135/85" }
+                    heartRate: { type: integer, example: 88 }
+                    temperature: { type: number, example: 98.6 }
+                notes: { type: string, example: "Recommend complete bed rest and immediate telemetry follow-up." }
+      responses:
+        '201':
+          description: Clinical consultation ledger document item successfully archived into database indexes.
+        '400':
+          description: Bad request payload structure or malformed JSON control parameters.
+
+  /records/patient/{patientId}:
+    get:
+      summary: Fetch absolute historical medical records of a patient
+      tags: [Medical Records]
+      parameters:
+        - name: patientId
+          in: path
+          required: true
+          description: The 24-char patient target identifier
+          schema: { type: string, example: "6a2a9ce4bdd54565056b47ec" }
+      responses:
+        '200':
+          description: Complete chronological clinical ledger profile loaded for target patient case.
+        '404':
+          description: No history indices available for this record profile.
